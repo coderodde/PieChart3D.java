@@ -191,11 +191,10 @@ public final class PieChart3D extends Canvas {
         double centerY = canvasDimension / 2.0;
         
         gc.setFill(color);
-        
-        gc.fillArc(centerX - actualRadius / 2.0, 
-                   centerY - actualRadius / 2.0,
-                   actualRadius,
-                   actualRadius,
+        gc.fillArc(centerX - actualRadius, 
+                   centerY - actualRadius,
+                   2.0 * actualRadius,
+                   2.0 * actualRadius,
                    startAngle,
                    angle,
                    ArcType.ROUND);
@@ -209,11 +208,6 @@ public final class PieChart3D extends Canvas {
         }
         
         return angleSum;
-    }
-    
-    private double computeStartAngleDelta(int entryIndex) {
-        PieChart3DEntry entry = entries.get(entryIndex);
-        return normalizeSectorAngle(entry);
     }
     
     private static void checkDimension(double dimension) {
@@ -288,11 +282,6 @@ public final class PieChart3D extends Canvas {
         return 360.0 * 
                 (entry.getSectorAngleValue() / 
                  getSumOfEntrySectorAngles());
-    }
-    
-    private double normalizeSectorIntensityColor(PieChart3DEntry entry) {
-        return entry.getSectorColorIntensityValue() / 
-                     getMaximumColorIntensity();
     }
     
     private Color obtainColor(double intensity) {

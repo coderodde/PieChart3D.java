@@ -127,10 +127,6 @@ final class DemoTask extends Task<Void> {
         int iterations = 0;
                 
         while (doRun) {
-            try {
-                Thread.sleep(Duration.ofSeconds(SLEEP_DURATION_SECONDS).toMillis());
-            } catch (InterruptedException ex) {}
-            
             PieChart3D chart = PieChart3DDemo.getRandomChart(random);
             
             Platform.runLater(() -> {
@@ -139,7 +135,11 @@ final class DemoTask extends Task<Void> {
                 chart.draw();
             });
             
-            System.out.println("Iterated: " + iterations++);
+            System.out.println("Iterated: " + ++iterations);
+            
+            try {
+                Thread.sleep(Duration.ofSeconds(SLEEP_DURATION_SECONDS).toMillis());
+            } catch (InterruptedException ex) {}
         }
         
         return null;
