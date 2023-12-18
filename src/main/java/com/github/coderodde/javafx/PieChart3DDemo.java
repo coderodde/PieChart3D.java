@@ -7,6 +7,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
  
 public class PieChart3DDemo extends Application {
+    
+    private static final double DIMENSION = 500.0;
+    
     public static void main(String[] args) {
         launch(args);
     }
@@ -15,7 +18,7 @@ public class PieChart3DDemo extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaFX3DPieChart demo");
         StackPane root = new StackPane();
-        PieChart3D chart = new PieChart3D(300.0);
+        PieChart3D chart = new PieChart3D(DIMENSION);
         chart.setBoxBackgroundColor(Color.GREY);
         chart.setChartBackgroundColor(Color.TOMATO);
         
@@ -23,17 +26,17 @@ public class PieChart3DDemo extends Application {
         PieChart3DEntry entry2 = new PieChart3DEntry();
         PieChart3DEntry entry3 = new PieChart3DEntry();
         
-        entry1.setColorIntensityValue(0.5);
-        entry1.setRadiusValue(100.0);
-        entry1.setSectorValue(100.0);
+        entry1.setSectorColorIntensityValue(0.5);
+        entry1.setSectorRadiusValue(100.0);
+        entry1.setSectorAngleValue(100.0);
         
-        entry2.setColorIntensityValue(1);
-        entry2.setRadiusValue(70.0);
-        entry2.setSectorValue(50.0);
+        entry2.setSectorColorIntensityValue(1);
+        entry2.setSectorRadiusValue(70.0);
+        entry2.setSectorAngleValue(50.0);
         
-        entry3.setColorIntensityValue(0.3);
-        entry3.setRadiusValue(50.0);
-        entry3.setSectorValue(60.0);
+        entry3.setSectorColorIntensityValue(0.3);
+        entry3.setSectorRadiusValue(50.0);
+        entry3.setSectorAngleValue(60.0);
         
         chart.add(entry1);
         chart.add(entry2);
@@ -43,8 +46,8 @@ public class PieChart3DDemo extends Application {
         chart.draw();
         primaryStage.setScene(
                 new Scene(root, 
-                          chart.getWidth(),
-                          chart.getHeight()));
+                          DIMENSION,
+                          DIMENSION));
         
         primaryStage.show();
     }

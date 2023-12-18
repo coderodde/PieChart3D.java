@@ -8,35 +8,57 @@ package com.github.coderodde.javafx;
  */
 public final class PieChart3DEntry {
     
-    private double radiusValue;
-    private double sectorValue;
-    private double colorIntensityValue;
+    /**
+     * Holds the sector radius of this entry.
+     */
+    private double sectorRadiusValue;
     
-    public double getRadiusValue() {
-        return radiusValue;
+    /**
+     * Holds the sector angle of this entry.
+     */
+    private double sectorAngleValue;
+    
+    /**
+     * Holds the sector color intensity of this entry.
+     */
+    private double sectorColorIntensityValue;
+    
+    public double getSectorRadiusValue() {
+        return sectorRadiusValue;
     }
 
-    public double getSectorValue() {
-        return sectorValue;
+    public double getSectorAngleValue() {
+        return sectorAngleValue;
     }
 
-    public double getColorIntensityValue() {
-        return colorIntensityValue;
+    public double getSectorColorIntensityValue() {
+        return sectorColorIntensityValue;
     }
 
-    public void setRadiusValue(double radiusValue) {
-        checkValue(radiusValue);
-        this.radiusValue = radiusValue;
+    public void setSectorRadiusValue(double sectorRadiusValue) {
+        checkValue(sectorRadiusValue);
+        this.sectorRadiusValue = sectorRadiusValue;
     }
 
-    public void setSectorValue(double sectorValue) {
-        checkValue(sectorValue);
-        this.sectorValue = sectorValue;
+    public void setSectorAngleValue(double sectorAngleValue) {
+        checkValue(sectorAngleValue);
+        this.sectorAngleValue = sectorAngleValue;
     }
 
-    public void setColorIntensityValue(double colorIntensityValue) {
-        checkValue(colorIntensityValue);
-        this.colorIntensityValue = colorIntensityValue;
+    public void setSectorColorIntensityValue(double sectorColorIntensityValue) {
+        checkValue(sectorColorIntensityValue);
+        this.sectorColorIntensityValue = sectorColorIntensityValue;
+    }
+    
+    @Override
+    public String toString() {
+        return "[sectorRadiusValue = " 
+                + sectorRadiusValue
+                + ", sectorAngleValue = " 
+                + sectorAngleValue 
+                + ", sectorColorIntensityValue = "
+                + sectorColorIntensityValue
+                + "]";
     }
 
     private static void checkValue(double value) {
