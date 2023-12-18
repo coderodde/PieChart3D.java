@@ -180,12 +180,12 @@ public final class PieChart3D extends Canvas {
         
         gc.setFill(color);
         
-        gc.fillArc(centerX, 
-                   centerY,
+        gc.fillArc(centerX - actualRadius / 2.0, 
+                   centerY - actualRadius / 2.0,
                    actualRadius,
                    actualRadius,
                    startAngle,
-                   startAngle + absoluteAngle,
+                   absoluteAngle,
                    ArcType.ROUND);
     }
     

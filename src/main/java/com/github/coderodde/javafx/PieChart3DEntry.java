@@ -50,6 +50,22 @@ public final class PieChart3DEntry {
         this.sectorColorIntensityValue = sectorColorIntensityValue;
     }
     
+    public PieChart3DEntry withSectorRadiusValue(double sectorRadiusValue) {
+        setSectorRadiusValue(sectorRadiusValue);
+        return this;
+    }
+    
+    public PieChart3DEntry withSectorAngleValue(double sectorAngleValue) {
+        setSectorAngleValue(sectorAngleValue);
+        return this;
+    }
+    
+    public PieChart3DEntry withSectorColorIntensityValue(
+            double sectorColorIntensityValue) {
+        setSectorColorIntensityValue(sectorColorIntensityValue);
+        return this;
+    }
+    
     @Override
     public String toString() {
         return "[sectorRadiusValue = " 
