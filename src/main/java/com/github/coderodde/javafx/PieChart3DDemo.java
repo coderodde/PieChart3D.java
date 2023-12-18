@@ -18,22 +18,23 @@ public class PieChart3DDemo extends Application {
         primaryStage.setTitle("PieChart3D demo");
         StackPane root = new StackPane();
         PieChart3D chart = new PieChart3D(DIMENSION);
+        chart.setAngleOffset(30.0);
         
         PieChart3DEntry entry1 = new PieChart3DEntry();
         PieChart3DEntry entry2 = new PieChart3DEntry();
         PieChart3DEntry entry3 = new PieChart3DEntry();
         
-        entry1.setSectorColorIntensityValue(0.5);
-        entry1.setSectorRadiusValue(100.0);
-        entry1.setSectorAngleValue(100.0);
+        entry1.withSectorAngleValue(1.0)
+              .withSectorColorIntensityValue(100.0)
+              .withSectorRadiusValue(1.0);
         
-        entry2.setSectorColorIntensityValue(1);
-        entry2.setSectorRadiusValue(70.0);
-        entry2.setSectorAngleValue(50.0);
+        entry2.withSectorAngleValue(1.0)
+              .withSectorColorIntensityValue(70.0)
+              .withSectorRadiusValue(0.6);
         
-        entry3.setSectorColorIntensityValue(0.3);
-        entry3.setSectorRadiusValue(50.0);
-        entry3.setSectorAngleValue(60.0);
+        entry3.withSectorAngleValue(1.0)
+              .withSectorColorIntensityValue(85.0)
+              .withSectorRadiusValue(0.2);
         
         chart.add(entry1);
         chart.add(entry2);

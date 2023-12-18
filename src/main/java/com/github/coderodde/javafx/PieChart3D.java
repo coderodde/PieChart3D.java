@@ -144,33 +144,45 @@ public final class PieChart3D extends Canvas {
         double sumOfRelativeAngles        = computeSumOfRelativeAngles();
         double maximumRadiusValue         = getMaximumRadiusValue();
         double maximumColorIntensityValue = getMaximumColorIntensity();
-        double startAngle                 = 0.0;
+        double startAngle                 = 90.0 - angleOffset;
         
         for (PieChart3DEntry entry : entries) {
-            double absoluteAngle = 360.0 * entry.getSectorAngleValue()
-                                         / sumOfRelativeAngles;
+            
+            double actualAngle = 360.0 * entry.getSectorAngleValue()
+                                       / sumOfRelativeAngles;
             
             double actualRadius =
                     (getHeight() / 2.0) * (entry.getSectorRadiusValue() 
                                         / maximumRadiusValue);
-            
+                                        
             Color actualColor = 
                     obtainColor(entry.getSectorColorIntensityValue() / 
                                 maximumColorIntensityValue);
             
+            double sectorStartAngle = startAngle - actualAngle;
+            
+            startAngle -= actualAngle;
+            
             drawSector(gc,
-                       startAngle,
-                       absoluteAngle,
+                       sectorStartAngle,
+                       actualAngle,
                        actualRadius,
                        actualColor);
-            
-            startAngle += absoluteAngle;
         }
     }
     
+    /**
+     * Draws a single sector.
+     * 
+     * @param gc           the graphics context.
+     * @param startAngle   the start angle.
+     * @param angle     the end angle.
+     * @param actualRadius the radius of the sector.
+     * @param color        the color of the sector.
+     */
     private void drawSector(GraphicsContext gc, 
                             double startAngle,
-                            double absoluteAngle,
+                            double angle,
                             double actualRadius,
                             Color color) {
         
@@ -185,7 +197,7 @@ public final class PieChart3D extends Canvas {
                    actualRadius,
                    actualRadius,
                    startAngle,
-                   absoluteAngle,
+                   angle,
                    ArcType.ROUND);
     }
     
