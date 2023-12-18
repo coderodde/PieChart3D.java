@@ -7,6 +7,7 @@ import java.util.Optional;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 
 /**
  * This class implements a pie chart that can communicate data points in three
@@ -23,10 +24,15 @@ import javafx.scene.paint.Color;
  */
 public final class PieChart3D extends Canvas {
     
-    private Color boxColor = Color.WHITE;
-    private Color chartBackgroundColor = Color.WHITE;
-    private Color originalIntensityColor;
-    private double angleOffset = 0.0;
+    private static final Color DEFAULT_BOX_COLOR = Color.WHITE;
+    private static final Color DEFAULT_CHART_BACKGROUND_COLOR = Color.WHITE;
+    private static final Color DEFAULT_ORIGINAL_INTENSITY_COLOR = Color.BLACK;
+    
+    private Color boxColor               = DEFAULT_BOX_COLOR;
+    private Color chartBackgroundColor   = DEFAULT_CHART_BACKGROUND_COLOR;
+    private Color originalIntensityColor = DEFAULT_ORIGINAL_INTENSITY_COLOR;
+    private double angleOffset           = 0.0;
+    
     private final List<PieChart3DEntry> entries = new ArrayList<>();
     
     public PieChart3D(double dimension) {
@@ -110,7 +116,12 @@ public final class PieChart3D extends Canvas {
     public void draw() {
         GraphicsContext gc = getGraphicsContext2D();
         drawBoundingBox(gc);
-        drawChart(gc);
+        drawEntirePieChart(gc);
+        
+        if (!entries.isEmpty()) {
+            // Once here, we have entries to draw:
+            drawChart(gc);
+        }
     }
     
     private void drawBoundingBox(GraphicsContext gc) {
@@ -130,23 +141,67 @@ public final class PieChart3D extends Canvas {
     }
     
     private void drawChart(GraphicsContext gc) {
-        double startAngle = 0.0;
-        int entryIndex = 0;
+        double sumOfRelativeAngles        = computeSumOfRelativeAngles();
+        double maximumRadiusValue         = getMaximumRadiusValue();
+        double maximumColorIntensityValue = getMaximumColorIntensity();
+        double startAngle                 = 0.0;
         
         for (PieChart3DEntry entry : entries) {
-            drawSector(gc, entry, startAngle);
-            startAngle += computeStartAngleDelta(entryIndex++);
+            double absoluteAngle = 360.0 * entry.getSectorAngleValue()
+                                         / sumOfRelativeAngles;
+            
+            double actualRadius =
+                    (getHeight() / 2.0) * (entry.getSectorRadiusValue() 
+                                        / maximumRadiusValue);
+            
+            Color actualColor = 
+                    obtainColor(entry.getSectorColorIntensityValue() / 
+                                maximumColorIntensityValue);
+            
+            drawSector(gc,
+                       startAngle,
+                       absoluteAngle,
+                       actualRadius,
+                       actualColor);
+            
+            startAngle += absoluteAngle;
         }
     }
     
     private void drawSector(GraphicsContext gc, 
-                            PieChart3DEntry entry,
-                            double startAngle) {
+                            double startAngle,
+                            double absoluteAngle,
+                            double actualRadius,
+                            Color color) {
         
+        double canvasDimension = getHeight();
+        double centerX = canvasDimension / 2.0;
+        double centerY = canvasDimension / 2.0;
+        
+        gc.setFill(color);
+        
+        gc.fillArc(centerX, 
+                   centerY,
+                   actualRadius,
+                   actualRadius,
+                   startAngle,
+                   startAngle + absoluteAngle,
+                   ArcType.ROUND);
+    }
+    
+    private double computeSumOfRelativeAngles() {
+        double angleSum = 0.0;
+        
+        for (PieChart3DEntry entry : entries) {
+            angleSum += entry.getSectorAngleValue();
+        }
+        
+        return angleSum;
     }
     
     private double computeStartAngleDelta(int entryIndex) {
-        return 0.0;
+        PieChart3DEntry entry = entries.get(entryIndex);
+        return normalizeSectorAngle(entry);
     }
     
     private static void checkDimension(double dimension) {
@@ -181,9 +236,7 @@ public final class PieChart3D extends Canvas {
     
     private double getMaximumRadiusValue() {
         Optional<PieChart3DEntry> optional = 
-                entries.stream().max((PieChart3DEntry e1, 
-                                      PieChart3DEntry e2) -> { 
-                    
+                entries.stream().max((e1, e2) -> {
             return Double.compare(e1.getSectorRadiusValue(), 
                                   e2.getSectorRadiusValue()); 
         });
@@ -195,10 +248,45 @@ public final class PieChart3D extends Canvas {
         return optional.get().getSectorRadiusValue();
     }
     
-    private static Color obtainColor(Color maximumColor, double intensity) {
-        double r = maximumColor.getRed();
-        double g = maximumColor.getGreen();
-        double b = maximumColor.getBlue();
+    private double getMaximumColorIntensity() {
+        Optional<PieChart3DEntry> optional = 
+                entries.stream().max((e1, e2) -> {
+                    return Double.compare(e1.getSectorColorIntensityValue(), 
+                                          e2.getSectorColorIntensityValue());
+                });
+        
+        if (optional.isEmpty()) {
+            throw new IllegalStateException("No entries in this chart.");
+        }
+        
+        return optional.get().getSectorColorIntensityValue();
+    }
+    
+    private double getSumOfEntrySectorAngles() {
+        double sum = 0.0;
+        
+        for (PieChart3DEntry entry : entries) {
+            sum += entry.getSectorAngleValue();
+        }
+        
+        return sum;
+    }
+    
+    private double normalizeSectorAngle(PieChart3DEntry entry) {
+        return 360.0 * 
+                (entry.getSectorAngleValue() / 
+                 getSumOfEntrySectorAngles());
+    }
+    
+    private double normalizeSectorIntensityColor(PieChart3DEntry entry) {
+        return entry.getSectorColorIntensityValue() / 
+                     getMaximumColorIntensity();
+    }
+    
+    private Color obtainColor(double intensity) {
+        double r = originalIntensityColor.getRed();
+        double g = originalIntensityColor.getGreen();
+        double b = originalIntensityColor.getBlue();
         
         r += (1.0 - r) * (1.0 - intensity);
         g += (1.0 - g) * (1.0 - intensity);

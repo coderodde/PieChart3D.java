@@ -16,7 +16,7 @@ public class PieChart3DDemo extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX3DPieChart demo");
+        primaryStage.setTitle("PieChart3D demo");
         StackPane root = new StackPane();
         PieChart3D chart = new PieChart3D(DIMENSION);
         chart.setBoxBackgroundColor(Color.GREY);
