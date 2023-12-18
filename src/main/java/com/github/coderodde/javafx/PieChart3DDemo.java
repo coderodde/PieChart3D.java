@@ -6,7 +6,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
  
-public class JavaFX3DPieChart extends Application {
+public class PieChart3DDemo extends Application {
     public static void main(String[] args) {
         launch(args);
     }
