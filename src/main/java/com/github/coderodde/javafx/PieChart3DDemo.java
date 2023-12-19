@@ -23,6 +23,10 @@ public class PieChart3DDemo extends Application {
                                                                   0.9,
                                                                   1.0);
     private static final DemoTask DEMO_TASK = new DemoTask();
+    private static final Color CHART_BACKGROUND_COLOR = new Color(0.9,
+                                                                  0.9,
+                                                                  0.9,
+                                                                  1.0);
     
     public static void main(String[] args) {
         Runtime.getRuntime()
@@ -80,6 +84,7 @@ public class PieChart3DDemo extends Application {
         chart.setChartBackgroundColor(CHART_BACKGROUND_COLOR);
         chart.setAngleOffset(angleOffset);
         chart.setOriginalIntensityColor(getRandomColor(random));
+        chart.setChartBackgroundColor(CHART_BACKGROUND_COLOR);
         
         for (int i = 0; i < numberOfSectors; i++) {
             PieChart3DEntry entry = 
