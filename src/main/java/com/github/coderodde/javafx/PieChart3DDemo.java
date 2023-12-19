@@ -1,6 +1,5 @@
 package com.github.coderodde.javafx;
 
-import java.time.Duration;
 import java.util.Random;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,6 +18,10 @@ public class PieChart3DDemo extends Application {
     private static final int MAXIMUM_NUMBER_OF_SECTORS = 20;
     private static final double MAXIMUM_VALUE = 200.0;
     private static final double FULL_ANGLE = 360.0;
+    private static final Color CHART_BACKGROUND_COLOR = new Color(0.9, 
+                                                                  0.9,
+                                                                  0.9,
+                                                                  1.0);
     private static final DemoTask DEMO_TASK = new DemoTask();
     
     public static void main(String[] args) {
@@ -74,6 +77,7 @@ public class PieChart3DDemo extends Application {
         
         PieChart3D chart = new PieChart3D(CANVAS_DIMENSION);
         
+        chart.setChartBackgroundColor(CHART_BACKGROUND_COLOR);
         chart.setAngleOffset(angleOffset);
         chart.setOriginalIntensityColor(getRandomColor(random));
         
@@ -93,7 +97,8 @@ public class PieChart3DDemo extends Application {
 
 final class DemoTask extends Task<Void> {
 
-    private static final long SLEEP_DURATION_SECONDS = 2L;
+    private static final long SLEEP_DURATION_IN_MILLISECONDS = 1L;
+    private static final int FRAMES_PER_CHART = 2_000;
     
     private volatile boolean doRun = true;
     private final Random random = new Random();
@@ -129,17 +134,22 @@ final class DemoTask extends Task<Void> {
         while (doRun) {
             PieChart3D chart = PieChart3DDemo.getRandomChart(random);
             
-            Platform.runLater(() -> {
-                root.getChildren().clear();
-                root.getChildren().add(chart);
-                chart.draw();
-            });
+            for (int i = 0; i < FRAMES_PER_CHART; i++) {
+
+                Platform.runLater(() -> {    
+                    root.getChildren().clear();
+                    root.getChildren().add(chart);
+                    
+                    chart.setAngleOffset(chart.getAngleOffset() + 0.1);
+                    chart.draw();
+                });
+                
+                try {
+                    Thread.sleep(SLEEP_DURATION_IN_MILLISECONDS);
+                } catch (InterruptedException ex) {}
+            }
             
             System.out.println("Iterated: " + ++iterations);
-            
-            try {
-                Thread.sleep(Duration.ofSeconds(SLEEP_DURATION_SECONDS).toMillis());
-            } catch (InterruptedException ex) {}
         }
         
         return null;
