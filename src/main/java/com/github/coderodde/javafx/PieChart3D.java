@@ -81,9 +81,7 @@ public final class PieChart3D extends Canvas {
         angleOffset %= 360.0;
         
         if (angleOffset < 0.0) {
-            System.out.print(angleOffset + " -> ");
             angleOffset += 360.0;
-            System.out.println(angleOffset);
         }
         
         this.angleOffset = angleOffset;
