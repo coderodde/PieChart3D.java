@@ -1,7 +1,8 @@
 package com.github.coderodde.javafx;
 
 /**
- *
+ * This class implements the pie chart entry.
+ * 
  * @author Rodion "rodde" Efremov
  * @version 1.6 (Dec 18, 2023)
  * @since 1.6 (Dec 18, 2023)
