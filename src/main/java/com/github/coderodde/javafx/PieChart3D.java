@@ -245,10 +245,6 @@ public final class PieChart3D extends Canvas {
                                   e2.getSectorRadiusValue()); 
         });
         
-        if (optional.isEmpty()) {
-            throw new IllegalStateException("No entries in this chart.");
-        }
-        
         return optional.get().getSectorRadiusValue();
     }
     
@@ -259,27 +255,7 @@ public final class PieChart3D extends Canvas {
                                           e2.getSectorColorIntensityValue());
                 });
         
-        if (optional.isEmpty()) {
-            throw new IllegalStateException("No entries in this chart.");
-        }
-        
         return optional.get().getSectorColorIntensityValue();
-    }
-    
-    private double getSumOfEntrySectorAngles() {
-        double sum = 0.0;
-        
-        for (PieChart3DEntry entry : entries) {
-            sum += entry.getSectorAngleValue();
-        }
-        
-        return sum;
-    }
-    
-    private double normalizeSectorAngle(PieChart3DEntry entry) {
-        return 360.0 * 
-                (entry.getSectorAngleValue() / 
-                 getSumOfEntrySectorAngles());
     }
     
     private Color obtainColor(double intensity) {
