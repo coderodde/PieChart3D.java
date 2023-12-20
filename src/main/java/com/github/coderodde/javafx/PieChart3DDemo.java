@@ -219,70 +219,75 @@ final class ControlledDemoTask extends Task<Void> {
         
         Scanner scanner = new Scanner(System.in);
         
-        loop:
-        while (true) {
-            System.out.print("> ");
-            
-            String command = scanner.next().trim();
-            
-            switch (command) {
-                case "quit":
-                case "exit":
-                    System.out.println("Bye!");
-                    Platform.exit();
-                    System.exit(0);
-                    break loop;
-                    
-                case "add":
-                    processAdd(chart, scanner);
-                    break;
-                    
-                case "add-at":
-                    processAddAt(chart, scanner);
-                    break;
-                    
-                case "set":
-                    processSet(chart, scanner);
-                    break;
-                    
-                case "print":
-                    processPrint(chart, scanner);
-                    break;
-                    
-                case "size":
-                    System.out.println(chart.size());
-                    break;
-                    
-                case "remove":
-                    processRemove(chart, scanner);
-                    break;
-                    
-                case "set-box-color":
-                    processSetBoxColor(chart, scanner);
-                    break;
-                    
-                case "set-chart-background":
-                    processSetChartBackground(chart, scanner);
-                    break;
-                    
-                case "set-color":
-                    processSetColor(chart, scanner);
-                    break;
-                    
-                case "set-angle":
-                    processSetAngle(chart, scanner);
-                    break;
-                    
-                case "add-angle":
-                    processAddAngle(chart, scanner);
-                    break;
+        try {
+            loop:
+            while (true) {
+                System.out.print("> ");
+
+                String command = scanner.next().trim();
+
+                switch (command) {
+                    case "quit":
+                    case "exit":
+                        System.out.println("Bye!");
+                        Platform.exit();
+                        System.exit(0);
+                        break loop;
+
+                    case "add":
+                        processAdd(chart, scanner);
+                        break;
+
+                    case "add-at":
+                        processAddAt(chart, scanner);
+                        break;
+
+                    case "set":
+                        processSet(chart, scanner);
+                        break;
+
+                    case "print":
+                        processPrint(chart, scanner);
+                        break;
+
+                    case "size":
+                        System.out.println(chart.size());
+                        break;
+
+                    case "remove":
+                        processRemove(chart, scanner);
+                        break;
+
+                    case "set-box-color":
+                        processSetBoxColor(chart, scanner);
+                        break;
+
+                    case "set-chart-background":
+                        processSetChartBackground(chart, scanner);
+                        break;
+
+                    case "set-color":
+                        processSetColor(chart, scanner);
+                        break;
+
+                    case "set-angle":
+                        processSetAngle(chart, scanner);
+                        break;
+
+                    case "add-angle":
+                        processAddAngle(chart, scanner);
+                        break;
+                }
+
+                Platform.runLater(() -> {
+                    root.getChildren().clear();
+                    root.getChildren().add(chart);
+                    chart.draw();
+                });
             }
-            
-            Platform.runLater(() -> {
-                root.getChildren().clear();
-                root.getChildren().add(chart);
-                chart.draw();
-            });
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            scanner.reset();
         }
         
         return null;
